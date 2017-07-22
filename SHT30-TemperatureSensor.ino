@@ -21,6 +21,8 @@
 
 const uint8_t sht30_address = 0x45; // Hardware address of the module, you can usually find this on the board
 
+const int cTempOffset = 0; // Temperature offset. Due to being close to the ESP8266 chip the sensor can be a few degrees off, you can correct this with this offset setting.
+
 // ***** Do not edit below this line ***************
 
 SHT3X sht30(sht30_address); 
@@ -56,10 +58,9 @@ void loop(void)
  
 void getTemperature() {
   if(sht30.get()==0){
-    temp_c = sht30.cTemp;
+    temp_c = sht30.cTemp + cTempOffset;
     temp_f = sht30.fTemp;
     humidity = sht30.humidity;
-    Serial.println("c " + String(temp_c,2) + " f " + String(temp_f,2) + " h " + String(humidity,2) );
   }else{
     Serial.println("temperature reading failed");
   }
